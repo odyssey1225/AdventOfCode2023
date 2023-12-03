@@ -1,12 +1,11 @@
 ﻿
 using var reader = new StreamReader(new FileInfo("Input.txt").OpenRead());
 
-var maxR = 12;
-var maxG = 13;
-var maxB = 14;
+const int maxR = 12;
+const int maxG = 13;
+const int maxB = 14;
 
-var answer = 0;
-var impossibleGames = 0;
+int p1Answer = 0, p2Answer = 0;
 
 while (!reader.EndOfStream)
 {
@@ -26,11 +25,10 @@ while (!reader.EndOfStream)
     };
 
     var isImpossible = false;
+    int minR = 0, minG = 0, minB = 0;
     
     foreach (var g in games)
     {
-        if (isImpossible) continue;
-        
         var sets = g.Split(',');
 
         foreach (var s in sets)
@@ -45,12 +43,19 @@ while (!reader.EndOfStream)
         {
             isImpossible = true;
         }
+
+        if (gD["red"] > minR) minR = gD["red"];
+        if (gD["green"] > minG) minG = gD["green"];
+        if (gD["blue"] > minB) minB = gD["blue"];
     }
     
     if (!isImpossible)
     {
-        answer += gId;
+        p1Answer += gId;
     }
+
+    p2Answer += minR * minG * minB;
 }
 
-Console.WriteLine(answer);
+Console.WriteLine($"Part 1: {p1Answer}");
+Console.WriteLine($"Part 2: {p2Answer}");
